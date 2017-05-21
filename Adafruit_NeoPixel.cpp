@@ -164,8 +164,6 @@ void Adafruit_NeoPixel::show(void) {
   uint8_t          *p   = pixels,
                    *end = p + numBytes, pix, mask;
   uint32_t          cyc;
-
-  uint32_t set_the_pin = (1 << pin);
   
   cyc = read_csr(mcycle) + CYCLES_800;
   
@@ -175,7 +173,7 @@ void Adafruit_NeoPixel::show(void) {
       while((read_csr(mcycle) - cyc) < CYCLES_800);
       cyc  = read_csr(mcycle);
 
-      GPIO_REG(GPIO_OUTPUT_VAL) = set_the_pin;
+      GPIO_REG(GPIO_OUTPUT_VAL) = pinMask;
       
       if(pix & mask) {
 	while((read_csr(mcycle) - cyc) < CYCLES_800_T1H);
@@ -200,10 +198,7 @@ void Adafruit_NeoPixel::setPin(uint8_t p) {
       pinMode(p, OUTPUT);
       digitalWrite(p, LOW);
     }
-#ifdef __AVR__
-    port    = portOutputRegister(digitalPinToPort(p));
     pinMask = digitalPinToBitMask(p);
-#endif
 }
 
 // Set pixel color from separate R,G,B components:
