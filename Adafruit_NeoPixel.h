@@ -169,12 +169,8 @@ class Adafruit_NeoPixel {
     wOffset;       // Index of white byte (same as rOffset if no white)
   uint32_t
     endTime;       // Latch timing reference
-#ifdef __AVR__
-  volatile uint8_t
-    *port;         // Output PORT register
-  uint8_t
+  uint32_t
     pinMask;       // Output PORT bitmask
-#endif
 };
 
 #endif // ADAFRUIT_NEOPIXEL_H
